@@ -6,12 +6,21 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+/**
+ * Hibernate session util to encapsulate the session creation
+ * 
+ * @author Sergio Rojas
+ *
+ */
 public class HibernateSessionUtil {
 
 	private static HibernateSessionUtil hsu = new HibernateSessionUtil();
 
 	private SessionFactory sf;
 
+	/**
+	 * Singleton class to create Hibernate Sessions
+	 */
 	private HibernateSessionUtil() {
 		// A SessionFactory is set up once for an application!
 		// configure() method call configures settings from hibernate.cfg.xml
@@ -27,10 +36,20 @@ public class HibernateSessionUtil {
 		}
 	}
 
+	/**
+	 * Retrieves the singleton instance
+	 * 
+	 * @return
+	 */
 	public static HibernateSessionUtil getInstance() {
 		return hsu;
 	}
 
+	/**
+	 * Get Hibernate Session
+	 * 
+	 * @return
+	 */
 	public Session getSession() {
 		return sf.openSession();
 	}
