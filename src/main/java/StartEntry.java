@@ -26,7 +26,7 @@ public class StartEntry {
 		try {
 			session = HibernateSessionUtil.getInstance().getSession();
 			FirstMappingTest fmt = new FirstMappingTest();
-			fmt.setTest("insertion 3");
+			fmt.setTest("insertion 1");
 			Transaction transaction = session.beginTransaction();
 			session.save(fmt);
 			transaction.commit();
