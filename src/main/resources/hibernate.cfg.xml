@@ -18,5 +18,6 @@
         <property name="connection_pool_size">1</property>
         
         <mapping class="org.hibernate.test.entity.FirstMappingTest"/>
+        <mapping class="org.hibernate.test.entity.Category"/>
     </session-factory>
 </hibernate-configuration>

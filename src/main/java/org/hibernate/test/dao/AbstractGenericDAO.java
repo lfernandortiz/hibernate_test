@@ -1,7 +1,9 @@
 package org.hibernate.test.dao;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.test.entity.IEntity;
@@ -66,7 +68,6 @@ public abstract class AbstractGenericDAO<E extends IEntity> {
 	 */
 	public E findById(Long id) {
 		return session.load(getEntityClass(), id);
-		
 	}
 	
 	/**
@@ -74,10 +75,23 @@ public abstract class AbstractGenericDAO<E extends IEntity> {
 	 * @return
 	 */
 	public List<E> findAll(){
-		StringBuilder hql = new StringBuilder();
-		hql.append("from ").append(getEntityClass().getName());
-		return (List<E>) session.createQuery(hql.toString()).list();
+		CriteriaQuery<E> query = session.getCriteriaBuilder().createQuery(getEntityClass());
+		Root<E> root = query.from(getEntityClass());
+		query.select(root);
+		return getListByCriteria(query);
 	}
+	
+
+	/**
+	 * 
+	 * @param criteriaQuery
+	 * @return
+	 */
+	public List<E> getListByCriteria(CriteriaQuery<E> criteriaQuery){
+		return session.createQuery(criteriaQuery).getResultList();
+	}
+	
+	
 	
 	
 
