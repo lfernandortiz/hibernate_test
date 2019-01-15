@@ -6,7 +6,6 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.hibernate.test.dao.CategoryDAO;
 import org.hibernate.test.entity.Category;
-import org.hibernate.test.entity.FirstMappingTest;
 import org.hibernate.test.util.HibernateSessionUtil;
 
 /**
