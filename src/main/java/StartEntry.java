@@ -34,31 +34,25 @@ public class StartEntry {
 	 * 
 	 */
 	public static void test3() {
-		Session session = null;
+		Session session1 = null;
 		try {
-			session = HibernateSessionUtil.getInstance().getSession();
-			CategoryDAO categoryDAO = new CategoryDAO(session);
+			session1 = HibernateSessionUtil.getInstance().getSession();
+			CategoryDAO categoryDAO = new CategoryDAO(session1);
 			Category[] category = {new Category("Technology"), new Category("Music"), new Category("Religion")};
 			Stream.of(category).forEach(categoryDAO::insert);
 			
 		}finally {
-			if(session!=null) {
-				session.close();
+			if(session1!=null) {
+				session1.close();
 			}
 			
 		}
-		
-		try {
-			session = HibernateSessionUtil.getInstance().getSession();
+
+		//use of try with resource statement in order to close the resource automatically
+		try (Session session = HibernateSessionUtil.getInstance().getSession()){
 			CategoryDAO categoryDAO = new CategoryDAO(session);
 			List<Category> categoryList = categoryDAO.findAll(); 
 			categoryList.stream().forEach(c->System.out.println(c));
-			
-		}finally {
-			if(session!=null) {
-				session.close();
-			}
-			
 		}
 		
 	}
