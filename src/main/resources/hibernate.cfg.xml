@@ -16,9 +16,9 @@
         <!--  make sure the database and the entity model are consistent -->
         <property name="hbm2ddl.auto">create</property>
         <property name="connection_pool_size">1</property>
-
-		<!-- Configuring the Annotated Classes -->        
-        <mapping class="org.hibernate.test.entity.FirstMappingTest"/>
         
+        
+        
+        <mapping class="org.hibernate.test.entity.Category"/>
     </session-factory>
 </hibernate-configuration>

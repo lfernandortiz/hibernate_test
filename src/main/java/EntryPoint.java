@@ -1,9 +1,9 @@
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
-import org.hibernate.test.entity.FirstMappingTest;
+import org.hibernate.test.dao.CategoryDAO;
+import org.hibernate.test.entity.Category;
 import org.hibernate.test.util.HibernateSessionUtil;
 
 /**
@@ -15,44 +15,45 @@ import org.hibernate.test.util.HibernateSessionUtil;
 public class EntryPoint {
 
 	public static void main(String[] args) {
-		test1();
+		test3();
 	}
 
 	/**
-	 * First test to know the application communicates with the database correctly
+	 * 
 	 */
-	public static void test1() {
-		Session session = null;
+	public static void test2() {
+		System.out.println(EntryPoint.class.getName());
+		System.out.println(EntryPoint.class.getSimpleName());
+		System.out.println(EntryPoint.class.getCanonicalName());
+		System.out.println(EntryPoint.class.getTypeName());
+	}
+
+	/**
+	 * 
+	 */
+	public static void test3() {
+		Session session1 = null;
 		try {
-			session = HibernateSessionUtil.getInstance().getSession();
-			FirstMappingTest fmt = new FirstMappingTest();
-			fmt.setTest("insertion 1");
-			Transaction transaction = session.beginTransaction();
-			session.save(fmt);
-			transaction.commit();
-			System.out.println(fmt.getId());
+			session1 = HibernateSessionUtil.getInstance().getSession();
+			CategoryDAO categoryDAO = new CategoryDAO(session1);
+			Category[] category = { new Category("Technology"), new Category("Music"), new Category("Religion") };
+			Stream.of(category).forEach(categoryDAO::insert);
 
 		} finally {
-			if (session != null) {
-				session.close();
+			if (session1 != null) {
+				session1.close();
 			}
+
 		}
 
-		try {
-			// just to make sure hibernate does not get entities from cache
-			session = HibernateSessionUtil.getInstance().getSession();
-			Query<FirstMappingTest> query = session.createQuery("from FirstMappingTest", FirstMappingTest.class);
-			List<FirstMappingTest> fmtList = query.list();
-
-			for (FirstMappingTest fmt : fmtList) {
-				System.out.println(fmt.getId());
-			}
-
-		} finally {
-			if (session != null) {
-				session.close();
-			}
+		// use of try with resource statement in order to close the resource
+		// automatically
+		try (Session session = HibernateSessionUtil.getInstance().getSession()) {
+			CategoryDAO categoryDAO = new CategoryDAO(session);
+			List<Category> categoryList = categoryDAO.findAll();
+			categoryList.stream().forEach(c -> System.out.println(c));
 		}
+
 	}
 
 }
